@@ -1,265 +1,340 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Khoud-7wayji | Boutique d'Échange & Seconde Main</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khoud-7wayji | Boutique d'Échange & Seconde Main</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@300;400;600;800&display=swap');
+        
+        :root {
+            --balna-bg: #fdfdfb;
+            --balna-accent: #0d0d0d;
+            --balna-border: #e8e8e3;
+        }
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--balna-bg);
+            color: var(--balna-accent);
+            overflow-x: hidden;
+        }
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@300;400;600;800&display=swap');
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
 
-:root {
---balna-bg: #fdfdfb;
---balna-accent: #0d0d0d;
---balna-border: #e8e8e3;
-}
+        /* Effet de grain subtil Gen-Z */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.02;
+            pointer-events: none;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            z-index: 9999;
+        }
 
-body {
-font-family: 'Inter', sans-serif;
-background-color: var(--balna-bg);
-color: var(--balna-accent);
-overflow-x: hidden;
-}
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
 
-.modal {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(255,255,255,0.98);
-z-index: 1000;
-backdrop-filter: blur(10px);
-}
+        .btn-black {
+            background: var(--balna-accent);
+            color: white;
+            padding: 1.25rem 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-size: 10px;
+            font-weight: 700;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid var(--balna-accent);
+        }
 
-.input-balna {
-border-bottom: 1px solid var(--balna-border);
-padding: 1rem 0;
-width: 100%;
-outline: none;
-background: transparent;
-}
+        .btn-black:hover {
+            background: transparent;
+            color: var(--balna-accent);
+            transform: translateY(-2px);
+        }
 
-.upload-zone {
-border: 1px dashed var(--balna-border);
-height: 300px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-position:relative;
-overflow:hidden;
-transition:0.4s;
-}
+        .nav-link {
+            position: relative;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
 
-.upload-zone:hover {
-border-color:black;
-}
+        .category-card {
+            height: 70vh;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
 
-.preview-img {
-position:absolute;
-inset:0;
-width:100%;
-height:100%;
-object-fit:cover;
-}
+        .category-card img {
+            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
 
-.btn-black {
-background:black;
-color:white;
-padding:15px 40px;
-font-size:11px;
-letter-spacing:0.2em;
-text-transform:uppercase;
-transition:0.3s;
-}
+        .category-card:hover img {
+            transform: scale(1.05);
+        }
 
-.btn-black:hover {
-background:transparent;
-color:black;
-border:1px solid black;
-}
-</style>
+        .scan-line {
+            height: 1px;
+            background: var(--balna-accent);
+            position: absolute;
+            width: 100%;
+            top: 0;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .input-balna {
+            border-bottom: 1px solid var(--balna-border);
+            padding: 1rem 0;
+            width: 100%;
+            outline: none;
+            background: transparent;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- NAVIGATION -->
-<nav class="sticky top-0 bg-white border-b z-50">
-<div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-24">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#f0f0ed]">
+        <div class="max-w-[1600px] mx-auto px-8 lg:px-16">
+            <div class="flex justify-between items-center h-28">
+                
+                <!-- Logo de la marque -->
+                <div class="flex items-center space-x-6">
+                    <div class="w-14 h-14 border border-black rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
+                        <img src="assets/logo de la marque .jpg" alt="Logo Khoud-7wayji" class="w-full h-full object-cover" onerror="this.src='image_f0f366.png'">
+                    </div>
+                    <img src="image_f0f369.png" alt="Khoud-7wayji Text" class="h-5 opacity-90 hidden md:block" onerror="this.src='https://api.placeholder.com/120/20?text=KHOUD-7WAYJI'">
+                </div>
 
-<div class="flex items-center space-x-6">
-<img src="assets/logo-marque.jpg" alt="Logo" class="h-12 object-contain">
-</div>
+                <!-- Liens -->
+                <div class="hidden lg:flex items-center space-x-16">
+                    <a href="#" class="nav-link">Market</a>
+                    <a href="#" class="nav-link">Editorial</a>
+                    <a href="https://www.instagram.com/khoud_7wayji/" target="_blank" class="nav-link"><i class="fab fa-instagram mr-2"></i>Instagram</a>
+                </div>
 
-<div class="space-x-8 text-xs uppercase tracking-widest font-bold">
-<a href="https://www.instagram.com/khoud_7wayji/" target="_blank">Instagram</a>
-<button onclick="openModal('profileModal')">Vendre</button>
-<button onclick="openModal('signupModal')" class="btn-black">S'inscrire</button>
-</div>
+                <!-- Actions -->
+                <div class="flex items-center space-x-8">
+                    <button onclick="openModal('profileModal')" class="nav-link hidden sm:block">Vendre</button>
+                    <button onclick="openModal('signupModal')" class="btn-black">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-</div>
-</nav>
+    <!-- Hero -->
+    <header class="pt-32 pb-16 px-8">
+        <div class="max-w-[1600px] mx-auto text-center">
+            <h1 class="text-7xl md:text-[12rem] font-medium leading-[0.85] tracking-tighter mb-16">
+                No cash?<br>
+                <span class="italic font-light">No drama.</span>
+            </h1>
+            <p class="serif text-3xl italic text-gray-400 mb-4">"Khoud l-style, flex l-vibe"</p>
+        </div>
+    </header>
 
-<!-- HERO -->
-<header class="py-32 text-center">
-<h1 class="text-6xl italic mb-6">No cash? No drama.</h1>
-<p class="italic text-2xl mb-4">Khoud l-style, flex l-vibe</p>
-</header>
+    <!-- Casiers de Marché (Marketplace Access) -->
+    <section class="max-w-[1600px] mx-auto px-8 lg:px-16 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Casier Hommes -->
+            <div class="category-card group cursor-pointer" onclick="showAlert('Catalogue Hommes bientôt disponible')">
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors z-10"></div>
+                <img src="https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?auto=format&fit=crop&q=80&w=1200" alt="Hommes" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-white">
+                    <span class="text-[10px] uppercase tracking-[0.5em] font-bold mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Shop Men's</span>
+                    <h2 class="serif text-7xl italic">Hommes</h2>
+                    <div class="mt-8 w-12 h-[1px] bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
+            </div>
 
-<!-- MAIN -->
-<main class="max-w-7xl mx-auto px-8 py-20 text-center">
-<p class="text-gray-400 italic text-3xl">Le futur de votre style commence ici.</p>
-</main>
+            <!-- Casier Femmes -->
+            <div class="category-card group cursor-pointer" onclick="showAlert('Catalogue Femmes bientôt disponible')">
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors z-10"></div>
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200" alt="Femmes" class="w-full h-full object-cover">
+                <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-white">
+                    <span class="text-[10px] uppercase tracking-[0.5em] font-bold mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">Shop Women's</span>
+                    <h2 class="serif text-7xl italic">Femmes</h2>
+                    <div class="mt-8 w-12 h-[1px] bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
+            </div>
 
-<!-- MODAL VENDRE -->
-<div id="profileModal" class="modal flex items-center justify-center p-8">
-<div class="bg-white w-full max-w-4xl p-16 relative border">
+        </div>
+    </section>
 
-<button onclick="closeModal('profileModal')" class="absolute right-8 top-8 text-3xl">&times;</button>
+    <!-- Nouvelle section d'exploration (Gen-Z vibe) -->
+    <main class="max-w-[1600px] mx-auto px-8 lg:px-16 py-24">
+        <div class="flex justify-between items-end mb-16 border-b border-gray-100 pb-12">
+            <div>
+                <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-4 block">Archive</span>
+                <h3 class="serif text-5xl italic">Exploration Globale</h3>
+            </div>
+            <div class="text-[10px] uppercase tracking-widest font-bold">0 Drop disponible</div>
+        </div>
 
-<h2 class="text-4xl mb-10 italic">Vendre</h2>
+        <div class="flex flex-col items-center justify-center min-h-[500px] border border-dashed border-gray-200 group relative" onclick="openModal('profileModal')">
+            <div class="text-center">
+                <p class="serif text-5xl italic text-gray-300 mb-10">Le futur de votre style commence ici.</p>
+                <button class="btn-black">Déposer un article</button>
+            </div>
+        </div>
+    </main>
 
-<div id="uploadZone" class="upload-zone" onclick="document.getElementById('imageInput').click()">
+    <!-- Footer Minimal -->
+    <footer class="py-32 border-t border-gray-100 mt-20">
+        <div class="max-w-[1600px] mx-auto px-8 lg:px-16 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-4 mb-8 md:mb-0">
+                <span class="text-[10px] uppercase tracking-[0.3em] font-bold">Khoud-7wayji © 2024</span>
+            </div>
+            <div class="flex space-x-12 text-[10px] uppercase tracking-[0.3em] font-bold">
+                <a href="#" class="hover:opacity-50 transition">Mentions</a>
+                <a href="https://www.instagram.com/khoud_7wayji/" class="hover:text-pink-600 transition">Instagram</a>
+            </div>
+        </div>
+    </footer>
 
-<input type="file" id="imageInput" accept="image/*" class="hidden" onchange="previewImage(event)">
+    <!-- Modals (Profil & Inscription) -->
+    <!-- Modal Profil -->
+    <div id="profileModal" class="modal flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-6xl h-[85vh] overflow-hidden flex flex-col md:flex-row shadow-2xl relative border border-gray-100">
+            <button onclick="closeModal('profileModal')" class="absolute top-10 right-10 text-3xl font-light hover:rotate-90 transition-transform">&times;</button>
+            <div class="md:w-5/12 bg-[#fafaf8] p-16 flex flex-col justify-center border-r border-gray-100">
+                <h3 class="serif text-6xl mb-8 italic">Vendre.</h3>
+                <p class="text-[11px] uppercase tracking-widest leading-loose text-gray-400">Transformez votre archive personnelle en opportunité.</p>
+            </div>
+            <div class="flex-1 p-16 overflow-y-auto space-y-12">
+                <div class="upload-zone h-80 flex flex-col items-center justify-center cursor-pointer group hover:bg-black transition-all duration-700">
+                    <i class="fas fa-camera text-gray-300 group-hover:text-white text-2xl mb-4"></i>
+                    <span class="text-[9px] uppercase tracking-widest font-bold group-hover:text-white">Importer des visuels</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <input type="text" placeholder="Nom de l'article" class="input-balna">
+                    <input type="number" placeholder="Prix (MAD)" class="input-balna">
+                </div>
+                <button onclick="showAlert('Publication en cours de vérification')" class="btn-black w-full">Confirmer le dépôt</button>
+            </div>
+        </div>
+    </div>
 
-<div id="uploadText" class="text-center uppercase text-xs tracking-widest">
-Importer une image
-</div>
+    <!-- Modal Inscription -->
+    <div id="signupModal" class="modal flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-2xl p-16 md:p-24 shadow-2xl relative border border-gray-100">
+            <button onclick="closeModal('signupModal')" class="absolute top-10 right-10 text-3xl font-light">&times;</button>
+            <h2 class="serif text-7xl mb-16 italic">Rejoindre.</h2>
+            <form onsubmit="handleRegistration(event)" class="space-y-12">
+                <div class="grid grid-cols-2 gap-12">
+                    <input type="text" placeholder="Nom Complet" required class="input-balna">
+                    <input type="date" id="birthDate" onchange="checkAge()" required class="input-balna">
+                </div>
+                <input type="email" placeholder="Email" required class="input-balna">
+                <input type="tel" placeholder="WhatsApp / Téléphone" required class="input-balna">
+                
+                <div id="sellerSecurity" class="hidden">
+                    <div id="scanZone" class="border border-dashed border-gray-200 h-32 flex flex-col items-center justify-center relative overflow-hidden bg-[#fafaf8] cursor-pointer" onclick="simulateScan()">
+                        <div id="scanLine" class="scan-line hidden"></div>
+                        <div id="scanPrompt" class="text-[9px] uppercase tracking-widest font-bold">Scanner CIN</div>
+                        <div id="scanLoading" class="hidden text-[9px] uppercase tracking-widest font-bold animate-pulse">Vérification...</div>
+                        <div id="scanSuccess" class="hidden text-green-600 text-[9px] uppercase tracking-widest font-bold">Identité Vérifiée</div>
+                    </div>
+                    <input type="hidden" id="cinStatus" value="false">
+                </div>
 
-<img id="preview" class="preview-img hidden">
+                <button type="submit" class="btn-black w-full">Créer mon profil</button>
+            </form>
+        </div>
+    </div>
 
-</div>
+    <!-- Alerte -->
+    <div id="alertBox" class="fixed bottom-16 left-1/2 -translate-x-1/2 z-[2000] opacity-0 transition-all duration-700 translate-y-8 pointer-events-none">
+        <div class="bg-black text-white px-16 py-6 shadow-2xl">
+            <span id="alertMessage" class="text-[10px] uppercase tracking-[0.4em] font-bold"></span>
+        </div>
+    </div>
 
-<div class="grid grid-cols-2 gap-10 mt-12">
-<input type="text" placeholder="Nom de l'article" class="input-balna">
-<input type="number" placeholder="Prix (MAD)" class="input-balna">
-</div>
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
 
-<button class="btn-black mt-12 w-full" onclick="showAlert('Article en vérification')">
-Confirmer le dépôt
-</button>
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
 
-</div>
-</div>
+        function showAlert(msg) {
+            const box = document.getElementById('alertBox');
+            const message = document.getElementById('alertMessage');
+            message.textContent = msg;
+            box.classList.remove('opacity-0', 'translate-y-8');
+            setTimeout(() => box.classList.add('opacity-0', 'translate-y-8'), 4000);
+        }
 
-<!-- MODAL INSCRIPTION -->
-<div id="signupModal" class="modal flex items-center justify-center p-8">
-<div class="bg-white w-full max-w-xl p-16 relative border">
+        function checkAge() {
+            const birth = document.getElementById('birthDate').value;
+            if(!birth) return;
+            const age = new Date().getFullYear() - new Date(birth).getFullYear();
+            const sellerSec = document.getElementById('sellerSecurity');
+            if (age >= 18) sellerSec.classList.remove('hidden');
+            else sellerSec.classList.add('hidden');
+        }
 
-<button onclick="closeModal('signupModal')" class="absolute right-8 top-8 text-3xl">&times;</button>
+        function simulateScan() {
+            const status = document.getElementById('cinStatus');
+            if (status.value === "true") return;
 
-<h2 class="text-4xl italic mb-10">Rejoindre</h2>
+            document.getElementById('scanPrompt').classList.add('hidden');
+            document.getElementById('scanLoading').classList.remove('hidden');
+            document.getElementById('scanLine').classList.remove('hidden');
 
-<form onsubmit="handleRegistration(event)" class="space-y-8">
+            setTimeout(() => {
+                document.getElementById('scanLoading').classList.add('hidden');
+                document.getElementById('scanLine').classList.add('hidden');
+                document.getElementById('scanSuccess').classList.remove('hidden');
+                status.value = "true";
+                showAlert("Document Validé");
+            }, 3000);
+        }
 
-<input type="text" placeholder="Nom Complet" required class="input-balna">
+        function handleRegistration(e) {
+            e.preventDefault();
+            const age = new Date().getFullYear() - new Date(document.getElementById('birthDate').value).getFullYear();
+            const cinVerified = document.getElementById('cinStatus').value;
+            if (age >= 18 && cinVerified !== "true") {
+                showAlert("Vérification ID manquante");
+                return;
+            }
+            showAlert("Bienvenue au club Khoud");
+            setTimeout(() => closeModal('signupModal'), 2000);
+        }
 
-<input type="date" id="birthDate" required class="input-balna" onchange="checkAge()">
-
-<input type="email" placeholder="Email" required class="input-balna">
-
-<input type="tel" placeholder="Téléphone" required class="input-balna">
-
-<div id="cinSection" class="hidden">
-<p class="text-xs mb-4 uppercase tracking-widest">Vérification CIN obligatoire</p>
-<button type="button" onclick="verifyCIN()" class="btn-black w-full">Scanner CIN</button>
-<input type="hidden" id="cinStatus" value="false">
-</div>
-
-<button type="submit" class="btn-black w-full">Créer mon profil</button>
-
-</form>
-
-</div>
-</div>
-
-<!-- ALERT -->
-<div id="alertBox" class="fixed bottom-10 left-1/2 -translate-x-1/2 opacity-0 transition-all">
-<div class="bg-black text-white px-12 py-4 uppercase tracking-widest text-xs">
-<span id="alertText"></span>
-</div>
-</div>
-
-<script>
-
-function openModal(id){
-document.getElementById(id).style.display="flex";
-document.body.style.overflow="hidden";
-}
-
-function closeModal(id){
-document.getElementById(id).style.display="none";
-document.body.style.overflow="auto";
-}
-
-function previewImage(event){
-const file=event.target.files[0];
-if(!file) return;
-
-const reader=new FileReader();
-reader.onload=function(e){
-document.getElementById('preview').src=e.target.result;
-document.getElementById('preview').classList.remove('hidden');
-document.getElementById('uploadText').classList.add('hidden');
-}
-reader.readAsDataURL(file);
-}
-
-function checkAge(){
-const birth=document.getElementById('birthDate').value;
-if(!birth) return;
-
-const today=new Date();
-const birthDate=new Date(birth);
-let age=today.getFullYear()-birthDate.getFullYear();
-const m=today.getMonth()-birthDate.getMonth();
-if(m<0 || (m===0 && today.getDate()<birthDate.getDate())) age--;
-
-if(age>=18){
-document.getElementById('cinSection').classList.remove('hidden');
-}else{
-document.getElementById('cinSection').classList.add('hidden');
-}
-}
-
-function verifyCIN(){
-document.getElementById('cinStatus').value="true";
-showAlert("CIN vérifiée");
-}
-
-function handleRegistration(e){
-e.preventDefault();
-
-const birth=document.getElementById('birthDate').value;
-const age=new Date().getFullYear()-new Date(birth).getFullYear();
-const cin=document.getElementById('cinStatus').value;
-
-if(age>=18 && cin!=="true"){
-showAlert("Vérification CIN requise");
-return;
-}
-
-showAlert("Bienvenue chez Khoud");
-closeModal('signupModal');
-}
-
-function showAlert(msg){
-const box=document.getElementById('alertBox');
-document.getElementById('alertText').textContent=msg;
-box.classList.remove('opacity-0');
-setTimeout(()=>box.classList.add('opacity-0'),4000);
-}
-
-window.onclick=function(e){
-if(e.target.classList.contains('modal')){
-closeModal(e.target.id);
-}
-}
-
-</script>
-
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal')) closeModal(e.target.id);
+        }
+    </script>
 </body>
 </html>
