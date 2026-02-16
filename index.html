@@ -81,6 +81,21 @@
             cursor: pointer;
         }
 
+        .btn-home {
+            background: transparent;
+            border: 1.5px solid var(--balna-accent);
+            padding: 0.8rem 2rem;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .btn-home:hover {
+            background: var(--balna-accent);
+            color: white;
+        }
+
         .category-card {
             height: 70vh;
             overflow: hidden;
@@ -150,23 +165,26 @@
     <div id="loader"></div>
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#f0f0ed]">
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#f0f0ed]">
         <div class="max-w-[1600px] mx-auto px-8 lg:px-16">
             <div class="flex justify-between items-center h-28">
-                <div class="flex items-center space-x-6">
-                    <div class="w-14 h-14 border border-black rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
+                
+                <div class="flex items-center space-x-8">
+                    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-home">
+                        ACCUEIL
+                    </button>
+                    <div class="w-14 h-14 border border-black rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm hidden sm:flex">
                         <img src="https://api.placeholder.com/100/100?text=KH" alt="Logo Khoud-7wayji" class="w-full h-full object-cover">
                     </div>
-                    <span class="serif text-2xl font-bold tracking-tight hidden md:block">KHOUD-7WAYJI</span>
                 </div>
 
-                <div class="hidden lg:flex items-center space-x-16">
-                    <a href="#" class="nav-link">Accueil</a>
-                    <a href="https://www.instagram.com/khoud_7wayji/" target="_blank" class="nav-link"><i class="fab fa-instagram mr-2"></i>Instagram</a>
+                <div class="flex flex-col items-center">
+                    <span class="serif text-3xl font-bold tracking-tighter">KHOUD-7WAYJI</span>
+                    <span class="text-[8px] tracking-[0.4em] uppercase opacity-50">Archive & Seconde Main</span>
                 </div>
 
-                <div class="flex items-center space-x-8">
-                    <button onclick="openModal('profileModal')" class="nav-link hidden sm:block">Déposer</button>
+                <div class="flex items-center space-x-6">
+                    <button onclick="openModal('profileModal')" class="nav-link hidden md:block">Déposer</button>
                     <button id="authBtn" onclick="openModal('signupModal')" class="btn-black">S'inscrire</button>
                     <div id="userBadge" class="hidden text-[10px] font-bold uppercase tracking-widest border border-black px-4 py-2">Membre</div>
                 </div>
@@ -208,37 +226,39 @@
         </div>
     </section>
 
-    <!-- Galerie des Articles (Dynamique) -->
+    <!-- Galerie -->
     <main class="max-w-[1600px] mx-auto px-8 lg:px-16 py-24">
         <div class="flex justify-between items-end mb-16 border-b border-gray-100 pb-12">
             <div>
                 <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-4 block">Archive Communautaire</span>
                 <h3 class="serif text-5xl italic">Articles Récents</h3>
             </div>
-            <div id="dropCount" class="text-[10px] uppercase tracking-widest font-bold">0 Drops</div>
+            <div id="dropCount" class="text-[10px] uppercase tracking-widest font-bold">Chargement...</div>
         </div>
 
         <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Items injectés par JS -->
              <div class="col-span-full py-20 text-center border border-dashed border-gray-200">
-                <p class="serif text-3xl italic text-gray-300">Aucun article pour le moment. Soyez le premier !</p>
+                <p class="serif text-3xl italic text-gray-300">Initialisation...</p>
              </div>
         </div>
 
-        <div class="mt-20 flex justify-center">
+        <div class="mt-20 flex flex-col items-center space-y-8">
             <button onclick="openModal('profileModal')" class="btn-black">Déposer un article</button>
+            <a href="https://www.instagram.com/khoud_7wayji/" target="_blank" class="flex items-center space-x-4 px-10 py-5 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full hover:scale-105 transition-transform shadow-lg">
+                <i class="fab fa-instagram text-2xl"></i>
+                <span class="font-bold tracking-widest uppercase text-sm">Nous suivre sur Instagram</span>
+            </a>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="py-32 border-t border-gray-100 mt-20">
+    <footer class="py-20 border-t border-gray-100 mt-20 bg-white">
         <div class="max-w-[1600px] mx-auto px-8 lg:px-16 flex flex-col md:flex-row justify-between items-center">
             <div class="flex items-center space-x-4 mb-8 md:mb-0">
                 <span class="text-[10px] uppercase tracking-[0.3em] font-bold">Khoud-7wayji © 2024</span>
             </div>
-            <div class="flex space-x-12 text-[10px] uppercase tracking-[0.3em] font-bold">
-                <a href="https://www.instagram.com/khoud_7wayji/" class="hover:text-pink-600 transition">Instagram</a>
-                <span id="userIdDisplay" class="text-gray-300 lowercase opacity-50"></span>
+            <div class="flex items-center space-x-12">
+                <a href="#" class="text-[10px] uppercase tracking-[0.3em] font-bold hover:opacity-50">Mentions Légales</a>
+                <span id="userIdDisplay" class="text-gray-300 lowercase text-[9px] opacity-50"></span>
             </div>
         </div>
     </footer>
@@ -293,7 +313,6 @@
         </div>
     </div>
 
-    <!-- Alerte -->
     <div id="alertBox" class="fixed bottom-16 left-1/2 -translate-x-1/2 z-[2000] opacity-0 transition-all duration-700 translate-y-8 pointer-events-none">
         <div class="bg-black text-white px-16 py-6 shadow-2xl">
             <span id="alertMessage" class="text-[10px] uppercase tracking-[0.4em] font-bold"></span>
@@ -312,8 +331,55 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'khoud-7wayji-prod';
 
         let currentUser = null;
+        let unsubscribeGallery = null;
 
-        // 1. Initialisation Auth
+        // Fonction pour charger la galerie uniquement quand l'auth est prête
+        const setupGalleryListener = (user) => {
+            if (!user) return;
+            
+            // Nettoyer l'ancien écouteur si il existe
+            if (unsubscribeGallery) unsubscribeGallery();
+
+            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'articles'));
+            
+            unsubscribeGallery = onSnapshot(q, (snapshot) => {
+                const container = document.getElementById('galleryContainer');
+                const countDisplay = document.getElementById('dropCount');
+                
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="col-span-full py-20 text-center border border-dashed border-gray-200">
+                        <p class="serif text-3xl italic text-gray-300">Aucun article pour le moment.</p>
+                    </div>`;
+                    countDisplay.textContent = "0 Drop";
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const item = doc.data();
+                    html += `
+                        <div class="product-card group cursor-pointer" onclick="showAlert('Contactez le vendeur pour cet article')">
+                            <div class="aspect-[4/5] overflow-hidden mb-6 bg-gray-50">
+                                <img src="${item.imageUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="serif text-xl italic">${item.name}</h4>
+                                    <p class="text-[9px] uppercase tracking-widest text-gray-400 mt-1">${doc.id.substring(0,8)}</p>
+                                </div>
+                                <span class="text-xs font-bold">${item.price} MAD</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                countDisplay.textContent = `${snapshot.size} Drops`;
+            }, (error) => {
+                console.error("Firestore Error:", error);
+                showAlert("Erreur de chargement des données.");
+            });
+        };
+
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -323,6 +389,7 @@
                 }
             } catch (error) {
                 console.error("Auth error", error);
+                showAlert("Erreur d'authentification.");
             }
         };
 
@@ -330,18 +397,12 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('userIdDisplay').textContent = `ID: ${user.uid}`;
-                // Si on a un profil enregistré on change le bouton
-                checkProfile(user.uid);
+                // Déclencher le listener de données maintenant qu'on est connecté
+                setupGalleryListener(user);
             }
         });
 
         initAuth();
-
-        // 2. Gestion du Profil
-        async function checkProfile(uid) {
-            // Dans ce contexte on peut juste vérifier via un flag local ou une requête rapide
-            // Pour l'UX on garde ça simple
-        }
 
         window.handleRegistration = async (e) => {
             e.preventDefault();
@@ -355,7 +416,7 @@
             
             const age = new Date().getFullYear() - new Date(birth).getFullYear();
             if (age >= 18 && cinVerified !== "true") {
-                showAlert("Vérification CIN requise pour les +18 ans");
+                showAlert("Vérification CIN requise");
                 return;
             }
 
@@ -366,156 +427,81 @@
                     createdAt: serverTimestamp()
                 });
                 
-                showAlert("Bienvenue dans la communauté !");
+                showAlert("Inscription réussie !");
                 document.getElementById('authBtn').classList.add('hidden');
                 document.getElementById('userBadge').classList.remove('hidden');
                 setTimeout(() => closeModal('signupModal'), 1500);
             } catch (err) {
-                showAlert("Erreur lors de l'inscription");
+                showAlert("Erreur d'inscription");
             } finally {
                 setLoading(false);
             }
         };
 
-        // 3. Gestion des Articles (Public)
         window.handleDeposit = async () => {
-            if (!currentUser) return;
+            if (!currentUser) {
+                showAlert("Veuillez vous inscrire d'abord");
+                return;
+            }
             
             const name = document.getElementById('itemName').value;
             const price = document.getElementById('itemPrice').value;
             const img = document.getElementById('imageUrl').value;
 
             if (!name || !price) {
-                showAlert("Veuillez remplir tous les champs");
+                showAlert("Complétez tous les champs");
                 return;
             }
 
             setLoading(true);
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'articles'), {
-                    name, 
-                    price: parseFloat(price), 
-                    imageUrl: img,
-                    sellerId: currentUser.uid,
-                    createdAt: serverTimestamp()
+                    name, price: parseFloat(price), imageUrl: img,
+                    sellerId: currentUser.uid, createdAt: serverTimestamp()
                 });
 
-                showAlert("Article publié avec succès !");
+                showAlert("Article en ligne !");
                 closeModal('profileModal');
-                // Reset form
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemPrice').value = '';
             } catch (err) {
-                showAlert("Erreur de publication");
+                showAlert("Erreur de dépôt");
             } finally {
                 setLoading(false);
             }
         };
 
-        // 4. Écouteur de la Galerie (Temps réel)
-        const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'articles'));
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById('galleryContainer');
-            const countDisplay = document.getElementById('dropCount');
-            
-            if (snapshot.empty) {
-                container.innerHTML = `<div class="col-span-full py-20 text-center border border-dashed border-gray-200">
-                    <p class="serif text-3xl italic text-gray-300">Aucun article pour le moment. Soyez le premier !</p>
-                </div>`;
-                countDisplay.textContent = "0 Drop";
-                return;
-            }
-
-            let html = '';
-            snapshot.forEach(doc => {
-                const item = doc.data();
-                html += `
-                    <div class="product-card group cursor-pointer" onclick="showAlert('Contactez le vendeur pour cet article')">
-                        <div class="aspect-[4/5] overflow-hidden mb-6 bg-gray-50">
-                            <img src="${item.imageUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" onerror="this.src='https://api.placeholder.com/400/500?text=No+Image'">
-                        </div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="serif text-xl italic">${item.name}</h4>
-                                <p class="text-[9px] uppercase tracking-widest text-gray-400 mt-1">ID: ${doc.id.substring(0,6)}</p>
-                            </div>
-                            <span class="text-xs font-bold">${item.price} MAD</span>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-            countDisplay.textContent = `${snapshot.size} Drops`;
-        }, (error) => {
-            console.error("Firestore listen error", error);
-        });
-
-        // Fonctions UI Globales
-        window.openModal = (id) => {
-            document.getElementById(id).style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.closeModal = (id) => {
-            document.getElementById(id).style.display = 'none';
-            document.body.style.overflow = 'auto';
-        };
-
+        window.openModal = (id) => { document.getElementById(id).style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+        window.closeModal = (id) => { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; };
         window.showAlert = (msg) => {
             const box = document.getElementById('alertBox');
-            const message = document.getElementById('alertMessage');
-            message.textContent = msg;
+            document.getElementById('alertMessage').textContent = msg;
             box.classList.remove('opacity-0', 'translate-y-8');
             setTimeout(() => box.classList.add('opacity-0', 'translate-y-8'), 4000);
         };
-
         window.setLoading = (isLoading) => {
             document.getElementById('loader').style.display = isLoading ? 'block' : 'none';
-            const btn = document.getElementById('confirmDeposit');
-            const regBtn = document.getElementById('submitReg');
-            if(btn) btn.disabled = isLoading;
-            if(regBtn) regBtn.disabled = isLoading;
         };
-
         window.checkAge = () => {
-            const birth = document.getElementById('birthDate').value;
-            if(!birth) return;
-            const age = new Date().getFullYear() - new Date(birth).getFullYear();
-            const sellerSec = document.getElementById('sellerSecurity');
-            if (age >= 18) sellerSec.classList.remove('hidden');
-            else sellerSec.classList.add('hidden');
+            const age = new Date().getFullYear() - new Date(document.getElementById('birthDate').value).getFullYear();
+            document.getElementById('sellerSecurity').className = age >= 18 ? 'block' : 'hidden';
         };
-
         window.simulateScan = () => {
-            const status = document.getElementById('cinStatus');
-            if (status.value === "true") return;
-
             document.getElementById('scanPrompt').classList.add('hidden');
             document.getElementById('scanLoading').classList.remove('hidden');
             document.getElementById('scanLine').classList.remove('hidden');
-
             setTimeout(() => {
                 document.getElementById('scanLoading').classList.add('hidden');
                 document.getElementById('scanLine').classList.add('hidden');
                 document.getElementById('scanSuccess').classList.remove('hidden');
-                status.value = "true";
-                showAlert("CIN Validée");
+                document.getElementById('cinStatus').value = "true";
             }, 2500);
         };
-
         window.simulateUpload = () => {
-            const label = document.getElementById('uploadLabel');
-            label.textContent = "Téléchargement...";
-            setTimeout(() => {
-                label.textContent = "Image prête ✓";
-                showAlert("Visuel enregistré");
-            }, 1500);
+            document.getElementById('uploadLabel').textContent = "Upload en cours...";
+            setTimeout(() => { document.getElementById('uploadLabel').textContent = "Terminé ✓"; }, 1500);
         };
-
-        window.onclick = function(e) {
-            if (e.target.classList.contains('modal')) closeModal(e.target.id);
-        }
-
+        window.onclick = (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); };
     </script>
 </body>
 </html>
