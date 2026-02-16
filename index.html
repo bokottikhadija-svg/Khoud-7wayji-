@@ -7,27 +7,37 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Inter:wght@300;400;600;800&display=swap');
         
         :root {
             --balna-bg: #fdfdfb;
-            --balna-accent: #1a1a1a;
-            --balna-border: #e5e5e1;
+            --balna-accent: #0d0d0d;
+            --balna-border: #e8e8e3;
+            --genz-blue: #2563eb;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--balna-bg);
             color: var(--balna-accent);
+            overflow-x: hidden;
         }
 
         h1, h2, h3, .serif {
             font-family: 'Cormorant Garamond', serif;
         }
 
-        .brand-bg { background-color: var(--balna-accent); }
-        .text-brand { color: var(--balna-accent); }
-        
+        /* Effet de grain subtil pour le style Gen-Z */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            z-index: 9999;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -35,230 +45,289 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(26, 26, 26, 0.4);
+            background-color: rgba(255, 255, 255, 0.95);
             z-index: 1000;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
         }
 
-        .upload-zone {
-            border: 1px solid var(--balna-border);
-            background: #fff;
-            transition: all 0.2s ease;
-        }
-
-        .upload-zone:hover {
-            border-color: #000;
-        }
-
-        .btn-minimal {
-            border: 1px solid var(--balna-accent);
-            transition: all 0.3s ease;
-        }
-
-        .btn-minimal:hover {
+        .btn-black {
             background: var(--balna-accent);
-            color: #fff;
+            color: white;
+            padding: 1rem 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 10px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* Scan Animation */
-        .scan-line {
-            height: 1px;
-            background: #000;
-            position: absolute;
-            width: 100%;
-            top: 0;
-            animation: scan 3s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
+        .btn-black:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background: #222;
         }
 
         .nav-link {
             position: relative;
-            padding-bottom: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
         }
+
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
             height: 1px;
-            bottom: 0;
+            bottom: -4px;
             left: 0;
-            background-color: currentColor;
+            background-color: var(--balna-accent);
             transition: width 0.3s ease;
         }
+
         .nav-link:hover::after {
             width: 100%;
+        }
+
+        /* Animation de Scan Gen-Z */
+        .scan-line {
+            height: 2px;
+            background: var(--balna-accent);
+            position: absolute;
+            width: 100%;
+            top: 0;
+            animation: scan 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .input-balna {
+            border-bottom: 1px solid var(--balna-border);
+            padding: 0.75rem 0;
+            width: 100%;
+            outline: none;
+            background: transparent;
+            font-size: 0.875rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-balna:focus {
+            border-color: var(--balna-accent);
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation Minimaliste -->
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-[#eee]">
-        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <!-- Header Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#f0f0ed]">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
             <div class="flex justify-between items-center h-24">
                 
-                <!-- Logos -->
-                <div class="flex items-center space-x-6">
-                    <img src="image_f0f366.png" alt="Logo k7" class="h-10 w-auto opacity-90" onerror="this.src='https://api.placeholder.com/40/40?text=K7'">
-                    <img src="image_f0f369.png" alt="Khoud-7wayji" class="h-6 hidden md:block" onerror="this.src='https://api.placeholder.com/120/30?text=KHOUD-7WAYJI'">
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-4">
+                    <div class="p-2 border border-black rounded-full">
+                        <img src="image_f0f366.png" alt="Logo K7" class="h-8 w-8 object-contain" onerror="this.src='https://api.placeholder.com/32/32?text=K7'">
+                    </div>
+                    <img src="image_f0f369.png" alt="Khoud-7wayji" class="h-5 hidden md:block opacity-90" onerror="this.src='https://api.placeholder.com/100/20?text=KHOUD-7WAYJI'">
                 </div>
 
-                <!-- Navigation -->
-                <div class="flex items-center space-x-8 uppercase tracking-[0.15em] text-[10px] font-semibold">
+                <!-- Center Nav (Gen-Z Style) -->
+                <div class="hidden lg:flex items-center space-x-12">
+                    <a href="#" class="nav-link">Shop</a>
+                    <a href="#" class="nav-link">Archive</a>
                     <a href="https://www.instagram.com/khoud_7wayji/" target="_blank" class="nav-link text-pink-600">Instagram</a>
-                    <button onclick="openModal('profileModal')" class="nav-link">Mes Ventes</button>
-                    <button onclick="openModal('signupModal')" class="bg-black text-white px-6 py-3 hover:bg-gray-800 transition">S'inscrire</button>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center space-x-6">
+                    <button onclick="openModal('profileModal')" class="hidden sm:block">
+                        <i class="fas fa-plus text-xs mr-2"></i>
+                        <span class="nav-link">Vendre</span>
+                    </button>
+                    <button onclick="openModal('signupModal')" class="btn-black">
+                        Join Club
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section Style Balna -->
-    <header class="py-24 md:py-32 border-b border-gray-100">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h1 class="text-5xl md:text-8xl font-medium mb-8 italic">
-                No cash? No drama.
+    <!-- Hero Section: Balna meets Gen-Z -->
+    <header class="relative pt-32 pb-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+            <h1 class="text-6xl md:text-[10rem] font-medium leading-none mb-12 tracking-tighter animate-pulse">
+                No cash?<br>
+                <span class="italic font-light">No drama.</span>
             </h1>
-            <p class="serif text-2xl md:text-3xl text-gray-600 mb-12 italic tracking-wide">
-                "Khoud l-style, flex l-vibe"
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 mb-16">
+                <span class="serif text-2xl italic text-gray-400">"Khoud l-style, flex l-vibe"</span>
+                <div class="h-[1px] w-12 bg-black hidden md:block"></div>
+                <span class="text-[10px] uppercase tracking-[0.3em] font-bold">Tangier / Casablanca / Online</span>
+            </div>
+
+            <p class="max-w-xl mx-auto text-xs uppercase tracking-[0.2em] leading-loose text-gray-500 font-semibold italic">
+                La destination marocaine pour le recyclage créatif. Échangez, vendez, évoluez.
             </p>
-            <div class="h-[1px] w-24 bg-black mx-auto mb-12"></div>
-            <p class="max-w-2xl mx-auto text-sm uppercase tracking-widest leading-loose text-gray-500">
-                Une plateforme marocaine dédiée à l’échange et à la seconde main. <br>
-                Renouvelez votre style, donnez une seconde vie à vos vêtements.
-            </p>
+        </div>
+        
+        <!-- Background Element Minimaliste -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none opacity-[0.03]">
+             <span class="text-[25vw] font-black uppercase text-black">KHOUD</span>
         </div>
     </header>
 
-    <!-- Galerie / Boutique Vide -->
-    <main class="max-w-7xl mx-auto px-6 lg:px-12 py-20">
-        <div class="flex flex-col items-center justify-center border border-dashed border-gray-200 py-32 bg-white">
-            <p class="serif text-3xl italic text-gray-400 mb-6">Votre dressing est actuellement vide.</p>
-            <button onclick="openModal('profileModal')" class="btn-minimal px-12 py-4 uppercase tracking-[0.2em] text-[11px] font-bold">
-                Ajouter un article
+    <!-- Galerie Grid (Vêtements des utilisateurs) -->
+    <main class="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
+        <div class="flex justify-between items-end mb-12 border-b border-gray-100 pb-8">
+            <h2 class="serif text-4xl italic">New Drops</h2>
+            <div class="text-[10px] uppercase tracking-widest font-bold">0 Items disponibles</div>
+        </div>
+
+        <!-- État vide stylisé -->
+        <div class="flex flex-col items-center justify-center min-h-[400px] bg-white border border-[#f0f0ed] group cursor-pointer overflow-hidden relative" onclick="openModal('profileModal')">
+            <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-[0.02] transition-opacity duration-700"></div>
+            <p class="serif text-4xl italic text-gray-300 mb-8 transform group-hover:scale-105 transition-transform duration-700">Ton dressing attend sa première pièce.</p>
+            <button class="btn-black px-12">
+                Drop your style
             </button>
         </div>
     </main>
 
-    <!-- Modal Profil (Ajout Vêtements) -->
+    <!-- Footer Minimal -->
+    <footer class="py-20 border-t border-gray-100 mt-20">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 border border-black rounded-full flex items-center justify-center">
+                    <span class="text-[8px] font-bold">K7</span>
+                </div>
+                <span class="text-[10px] uppercase tracking-widest font-bold">Khoud-7wayji © 2024</span>
+            </div>
+            <div class="flex space-x-8 text-[9px] uppercase tracking-widest font-bold text-gray-400">
+                <a href="#" class="hover:text-black transition">Privacy</a>
+                <a href="#" class="hover:text-black transition">Terms</a>
+                <a href="https://www.instagram.com/khoud_7wayji/" class="hover:text-pink-600 transition">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Profil (Vendre / Ajouter) -->
     <div id="profileModal" class="modal flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row shadow-2xl border border-gray-100">
-            <!-- Image déco ou info -->
-            <div class="md:w-1/3 bg-[#f9f9f7] p-12 hidden md:flex flex-col justify-center border-r border-gray-100">
-                <h3 class="serif text-4xl mb-6 italic">Mon Dressing</h3>
-                <p class="text-xs uppercase tracking-widest leading-relaxed text-gray-400">
-                    Chaque pièce mérite une seconde vie. Partagez votre style avec la communauté Khoud-7wayji.
+        <div class="bg-white w-full max-w-6xl h-[90vh] md:h-[80vh] overflow-hidden flex flex-col md:flex-row border border-gray-200 shadow-2xl relative">
+            <button onclick="closeModal('profileModal')" class="absolute top-8 right-8 z-20 text-2xl hover:rotate-90 transition-transform">&times;</button>
+            
+            <div class="md:w-5/12 bg-[#fafaf8] p-12 md:p-20 flex flex-col justify-center border-r border-gray-100">
+                <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-6">Create Listing</span>
+                <h3 class="serif text-6xl mb-8 italic leading-tight">Drop your<br>vibe.</h3>
+                <p class="text-[11px] uppercase tracking-widest leading-loose text-gray-400">
+                    Vendez ou échangez vos vêtements en quelques clics. La qualité avant la quantité.
                 </p>
             </div>
             
-            <div class="flex-1 p-8 md:p-16 overflow-y-auto relative">
-                <button onclick="closeModal('profileModal')" class="absolute top-8 right-8 text-2xl">&times;</button>
-                
-                <div class="grid grid-cols-1 gap-10">
-                    <div class="upload-zone h-64 flex flex-col items-center justify-center cursor-pointer">
-                        <i class="fas fa-plus text-gray-300 text-2xl mb-4"></i>
-                        <span class="uppercase tracking-widest text-[10px]">Télécharger une photo</span>
+            <div class="flex-1 p-8 md:p-20 overflow-y-auto">
+                <div class="grid grid-cols-1 gap-12">
+                    <div class="upload-zone h-64 flex flex-col items-center justify-center cursor-pointer group hover:bg-black transition-colors duration-500">
+                        <i class="fas fa-camera text-gray-300 text-xl group-hover:text-white mb-4"></i>
+                        <span class="uppercase tracking-[0.3em] text-[9px] font-bold group-hover:text-white transition-colors">Add Visuals</span>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="border-b border-gray-200 py-2">
-                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Titre de l'article</label>
-                            <input type="text" placeholder="..." class="w-full bg-transparent outline-none text-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                        <div class="space-y-2">
+                            <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Item Name</label>
+                            <input type="text" placeholder="..." class="input-balna">
                         </div>
-                        <div class="border-b border-gray-200 py-2">
-                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Prix (MAD)</label>
-                            <input type="number" placeholder="0" class="w-full bg-transparent outline-none text-sm">
+                        <div class="space-y-2">
+                            <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Price (MAD)</label>
+                            <input type="number" placeholder="0" class="input-balna">
                         </div>
-                        <div class="border-b border-gray-200 py-2">
-                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Taille</label>
-                            <select class="w-full bg-transparent outline-none text-sm appearance-none">
+                        <div class="space-y-2">
+                            <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Size</label>
+                            <select class="input-balna appearance-none">
                                 <option>S</option><option>M</option><option>L</option><option>XL</option>
                             </select>
                         </div>
-                        <div class="border-b border-gray-200 py-2">
-                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Description</label>
-                            <input type="text" placeholder="..." class="w-full bg-transparent outline-none text-sm">
+                        <div class="space-y-2">
+                            <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Description</label>
+                            <input type="text" placeholder="..." class="input-balna">
                         </div>
                     </div>
                     
-                    <button onclick="showAlert('Publication en cours de vérification')" class="bg-black text-white w-full py-5 uppercase tracking-[0.2em] text-[11px] font-bold">
-                        Publier dans mon dressing
+                    <button onclick="showAlert('Annonce en attente de vérification')" class="btn-black py-6">
+                        Confirm Drop
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Inscription + Scan CIN -->
+    <!-- Modal Inscription + Scan -->
     <div id="signupModal" class="modal flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-xl overflow-hidden shadow-2xl relative">
-            <button onclick="closeModal('signupModal')" class="absolute top-6 right-8 text-2xl">&times;</button>
+        <div class="bg-white w-full max-w-xl overflow-hidden border border-gray-200 shadow-2xl relative p-12 md:p-20">
+            <button onclick="closeModal('signupModal')" class="absolute top-8 right-8 text-2xl">&times;</button>
             
-            <div class="p-12 md:p-16">
-                <h2 class="serif text-5xl mb-10 italic">Bienvenue</h2>
-                
-                <form onsubmit="handleRegistration(event)" class="space-y-8">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="border-b border-gray-200 py-2">
-                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Nom Complet</label>
-                            <input type="text" required class="w-full bg-transparent outline-none text-sm">
+            <span class="text-[10px] uppercase tracking-[0.4em] font-bold text-gray-400 mb-6 block">Member Access</span>
+            <h2 class="serif text-6xl mb-12 italic">Join the Club</h2>
+            
+            <form onsubmit="handleRegistration(event)" class="space-y-10">
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Full Name</label>
+                        <input type="text" required class="input-balna">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Birth</label>
+                        <input type="date" id="birthDate" onchange="checkAge()" required class="input-balna">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">Email Address</label>
+                    <input type="email" required class="input-balna">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[9px] uppercase tracking-widest font-bold text-gray-400">WhatsApp / Tel</label>
+                    <input type="tel" required placeholder="06..." class="input-balna">
+                </div>
+
+                <!-- Scan CIN Zone -->
+                <div id="sellerSecurity" class="hidden animate-in fade-in duration-500">
+                    <div id="scanZone" class="border border-dashed border-gray-200 h-24 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer bg-[#fafaf8]" onclick="simulateScan()">
+                        <div id="scanLine" class="scan-line hidden"></div>
+                        <div id="scanPrompt" class="text-center">
+                            <p class="text-[8px] uppercase tracking-[0.3em] font-bold">Scan CIN ID (Required)</p>
                         </div>
-                        <div class="border-b border-gray-200 py-2">
-                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Naissance</label>
-                            <input type="date" id="birthDate" onchange="checkAge()" required class="w-full bg-transparent outline-none text-sm">
+                        <div id="scanLoading" class="hidden text-center">
+                            <p class="text-[8px] uppercase tracking-[0.3em] font-bold animate-pulse">Authenticating...</p>
+                        </div>
+                        <div id="scanSuccess" class="hidden text-center text-green-600">
+                            <i class="fas fa-check-circle text-xs mb-1"></i>
+                            <p class="text-[8px] uppercase tracking-[0.3em] font-bold">Verified</p>
                         </div>
                     </div>
+                    <input type="hidden" id="cinStatus" value="false">
+                </div>
 
-                    <div class="border-b border-gray-200 py-2">
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Email</label>
-                        <input type="email" required class="w-full bg-transparent outline-none text-sm">
-                    </div>
+                <div id="ageRestrictionMsg" class="hidden text-[8px] text-gray-400 uppercase tracking-[0.2em] font-bold">
+                    * Accès limité (Mineur) : Espace échange uniquement.
+                </div>
 
-                    <div class="border-b border-gray-200 py-2">
-                        <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Téléphone</label>
-                        <input type="tel" required placeholder="06..." class="w-full bg-transparent outline-none text-sm">
-                    </div>
-
-                    <!-- Scan CIN Interactif -->
-                    <div id="sellerSecurity" class="hidden pt-4">
-                        <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-4">Vérification CIN requise (Majeur)</p>
-                        <div id="scanZone" class="upload-zone h-32 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer" onclick="simulateScan()">
-                            <div id="scanLine" class="scan-line hidden"></div>
-                            <div id="scanPrompt" class="text-center">
-                                <i class="fas fa-id-card text-gray-200 mb-2"></i>
-                                <p class="text-[9px] uppercase tracking-[0.2em]">Scanner Recto CIN</p>
-                            </div>
-                            <div id="scanLoading" class="hidden text-center">
-                                <p class="text-[9px] uppercase tracking-[0.2em] animate-pulse">Analyse en cours...</p>
-                            </div>
-                            <div id="scanSuccess" class="hidden text-center text-green-600">
-                                <i class="fas fa-check mb-1"></i>
-                                <p class="text-[9px] uppercase tracking-[0.2em]">Document Validé</p>
-                            </div>
-                        </div>
-                        <input type="hidden" id="cinStatus" value="false">
-                    </div>
-
-                    <div id="ageRestrictionMsg" class="hidden text-[10px] text-gray-400 uppercase tracking-widest leading-loose">
-                        * En tant que mineur, la vente directe d'articles est désactivée.
-                    </div>
-
-                    <button type="submit" class="bg-black text-white w-full py-5 uppercase tracking-[0.2em] text-[11px] font-bold">
-                        Créer mon compte
-                    </button>
-                </form>
-            </div>
+                <button type="submit" class="btn-black w-full py-6 mt-4">
+                    Create Identity
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- Alert System -->
-    <div id="alertBox" class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[2000] opacity-0 transition-opacity duration-500 pointer-events-none">
-        <div class="bg-black text-white px-12 py-4 shadow-2xl">
-            <span id="alertMessage" class="text-[10px] uppercase tracking-[0.3em] font-bold"></span>
+    <!-- Alerte Minimaliste -->
+    <div id="alertBox" class="fixed bottom-12 left-1/2 -translate-x-1/2 z-[2000] opacity-0 transition-all duration-500 translate-y-4 pointer-events-none">
+        <div class="bg-black text-white px-12 py-5 shadow-2xl border border-white/10">
+            <span id="alertMessage" class="text-[9px] uppercase tracking-[0.4em] font-bold"></span>
         </div>
     </div>
 
@@ -277,8 +346,8 @@
             const box = document.getElementById('alertBox');
             const message = document.getElementById('alertMessage');
             message.textContent = msg;
-            box.classList.remove('opacity-0');
-            setTimeout(() => box.classList.add('opacity-0'), 4000);
+            box.classList.remove('opacity-0', 'translate-y-4');
+            setTimeout(() => box.classList.add('opacity-0', 'translate-y-4'), 4000);
         }
 
         function checkAge() {
@@ -310,7 +379,7 @@
                 document.getElementById('scanLine').classList.add('hidden');
                 document.getElementById('scanSuccess').classList.remove('hidden');
                 status.value = "true";
-                showAlert("Identification Réussie");
+                showAlert("Identity Verified");
             }, 3000);
         }
 
@@ -320,11 +389,11 @@
             const cinVerified = document.getElementById('cinStatus').value;
 
             if (age >= 18 && cinVerified !== "true") {
-                showAlert("Scan CIN Obligatoire");
+                showAlert("ID Verification Missing");
                 return;
             }
 
-            showAlert("Bienvenue chez Khoud");
+            showAlert("Welcome to Khoud-7wayji");
             setTimeout(() => closeModal('signupModal'), 2000);
         }
 
