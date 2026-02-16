@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khoud-7wayji | Marketplace</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+body { font-family: Inter, sans-serif; background:#fdfdfb; }
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); backdrop-filter:blur(4px); z-index:1000;}
+.upload-zone { border:1px solid #e5e5e1; background:#fff; cursor:pointer;}
+.upload-zone:hover { border-color:#000;}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="bg-white border-b sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-6 flex justify-between items-center h-20">
+
+<div class="text-2xl font-bold">Khoud-7wayji</div>
+
+<div class="space-x-6 text-sm uppercase tracking-widest">
+<a href="https://www.instagram.com/khoud_7wayji/" target="_blank" class="text-pink-600">Instagram</a>
+<button onclick="openModal('profileModal')">Mes Ventes</button>
+<button onclick="openModal('signupModal')" class="bg-black text-white px-5 py-2">S'inscrire</button>
+</div>
+
+</div>
+</nav>
+
+<!-- HERO -->
+<header class="py-24 text-center">
+<h1 class="text-6xl italic mb-6">No cash? No drama.</h1>
+<p class="text-xl italic mb-8">Khoud l-style, flex l-vibe</p>
+<p class="uppercase tracking-widest text-sm">
+Plateforme marocaine dédiée à l’échange et à la seconde main
+</p>
+</header>
+
+<!-- PRODUCTS -->
+<main class="max-w-7xl mx-auto px-6 py-16">
+<h2 class="text-2xl mb-8">Articles disponibles</h2>
+<div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+</main>
+
+<!-- MODAL ADD PRODUCT -->
+<div id="profileModal" class="modal flex items-center justify-center p-6">
+<div class="bg-white w-full max-w-3xl p-8 relative">
+
+<button onclick="closeModal('profileModal')" class="absolute right-6 top-6 text-xl">&times;</button>
+
+<h2 class="text-3xl mb-6">Ajouter un article</h2>
+
+<div id="uploadZone" class="upload-zone h-48 flex items-center justify-center relative overflow-hidden"
+onclick="document.getElementById('itemImages').click()">
+
+<input id="itemImages" type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+
+<div id="uploadPlaceholder">
+<i class="fas fa-plus text-3xl text-gray-400"></i>
+<p class="text-xs uppercase mt-2">Télécharger une photo</p>
+</div>
+
+<img id="previewImage" class="hidden w-full h-full object-cover absolute inset-0">
+</div>
+
+<div class="grid grid-cols-2 gap-4 mt-6">
+<input id="titleInput" placeholder="Titre" class="border p-2">
+<input id="priceInput" type="number" placeholder="Prix MAD" class="border p-2">
+<select id="sizeInput" class="border p-2">
+<option>S</option><option>M</option><option>L</option><option>XL</option>
+</select>
+<input id="descInput" placeholder="Description" class="border p-2">
+</div>
+
+<button onclick="publishItem()" class="bg-black text-white w-full py-3 mt-6 uppercase text-sm">
+Publier
+</button>
+
+</div>
+</div>
+
+<!-- MODAL SIGNUP -->
+<div id="signupModal" class="modal flex items-center justify-center p-6">
+<div class="bg-white w-full max-w-md p-8 relative">
+
+<button onclick="closeModal('signupModal')" class="absolute right-6 top-6 text-xl">&times;</button>
+
+<h2 class="text-2xl mb-6">Créer un compte</h2>
+
+<input id="birthDate" type="date" onchange="checkAge()" class="border p-2 w-full mb-4">
+<input type="email" placeholder="Email" class="border p-2 w-full mb-4">
+<input type="tel" placeholder="Téléphone" class="border p-2 w-full mb-4">
+
+<div id="sellerSecurity" class="hidden">
+<p class="text-xs mb-2">Scanner CIN (majeur)</p>
+<button onclick="simulateScan()" class="bg-gray-200 px-4 py-2 text-sm">Scanner</button>
+<input type="hidden" id="cinStatus" value="false">
+</div>
+
+<p id="minorMsg" class="hidden text-xs text-gray-500">
+Les mineurs ne peuvent pas vendre.
+</p>
+
+<button onclick="handleRegistration()" class="bg-black text-white w-full py-3 mt-6">
+Valider
+</button>
+
+</div>
+</div>
+
+<script>
+
+function openModal(id){
+document.getElementById(id).style.display="flex";
+document.body.style.overflow="hidden";
+}
+
+function closeModal(id){
+document.getElementById(id).style.display="none";
+document.body.style.overflow="auto";
+}
+
+function handleImageUpload(event){
+const file=event.target.files[0];
+if(!file) return;
+
+const reader=new FileReader();
+reader.onload=function(e){
+const preview=document.getElementById("previewImage");
+preview.src=e.target.result;
+preview.classList.remove("hidden");
+document.getElementById("uploadPlaceholder").classList.add("hidden");
+}
+reader.readAsDataURL(file);
+}
+
+function publishItem(){
+const title=document.getElementById("titleInput").value;
+const price=document.getElementById("priceInput").value;
+const size=document.getElementById("sizeInput").value;
+const desc=document.getElementById("descInput").value;
+const image=document.getElementById("previewImage").src;
+
+if(!title || !price || !image){
+alert("Complète les informations");
+return;
+}
+
+const grid=document.getElementById("productGrid");
+
+grid.innerHTML+=`
+<div class="border p-4 bg-white">
+<img src="${image}" class="w-full h-48 object-cover mb-4">
+<h3 class="font-bold">${title}</h3>
+<p>${price} MAD</p>
+<p class="text-xs text-gray-500">${size}</p>
+<p class="text-sm mt-2">${desc}</p>
+</div>
+`;
+
+closeModal("profileModal");
+}
+
+function checkAge(){
+const birth=document.getElementById("birthDate").value;
+if(!birth) return;
+
+const age=new Date().getFullYear()-new Date(birth).getFullYear();
+if(age>=18){
+document.getElementById("sellerSecurity").classList.remove("hidden");
+document.getElementById("minorMsg").classList.add("hidden");
+}else{
+document.getElementById("sellerSecurity").classList.add("hidden");
+document.getElementById("minorMsg").classList.remove("hidden");
+}
+}
+
+function simulateScan(){
+document.getElementById("cinStatus").value="true";
+alert("CIN vérifiée");
+}
+
+function handleRegistration(){
+alert("Compte créé !");
+closeModal("signupModal");
+}
+
+window.onclick=function(e){
+if(e.target.classList.contains("modal")){
+e.target.style.display="none";
+document.body.style.overflow="auto";
+}
+}
+
+</script>
+
+</body>
+</html>
